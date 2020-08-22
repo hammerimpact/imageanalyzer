@@ -51,6 +51,8 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.saveResultFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.textBoxLog = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.textBoxColorDiffMax = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_Start
@@ -258,11 +260,31 @@
             this.textBoxLog.Size = new System.Drawing.Size(718, 61);
             this.textBoxLog.TabIndex = 27;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(769, 241);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(85, 12);
+            this.label9.TabIndex = 28;
+            this.label9.Text = "Color Diff Max";
+            // 
+            // textBoxColorDiffMax
+            // 
+            this.textBoxColorDiffMax.Location = new System.Drawing.Point(769, 256);
+            this.textBoxColorDiffMax.Name = "textBoxColorDiffMax";
+            this.textBoxColorDiffMax.Size = new System.Drawing.Size(146, 21);
+            this.textBoxColorDiffMax.TabIndex = 29;
+            this.textBoxColorDiffMax.TextChanged += new System.EventHandler(this.textBoxColorDiffMax_TextChanged);
+            this.textBoxColorDiffMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxColorDiffMax_KeyPress);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 565);
+            this.Controls.Add(this.textBoxColorDiffMax);
+            this.Controls.Add(this.label9);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.listViewResults);
@@ -316,6 +338,8 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.SaveFileDialog saveResultFileDialog;
         private System.Windows.Forms.TextBox textBoxLog;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox textBoxColorDiffMax;
     }
 }
 

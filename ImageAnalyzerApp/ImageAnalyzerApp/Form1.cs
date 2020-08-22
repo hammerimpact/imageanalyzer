@@ -26,6 +26,7 @@ namespace ImageAnalyzerApp
         private string szDirectoryPath = string.Empty;
         private List<TargetFileInfo> listTargetFileInfos = new List<TargetFileInfo>();
         private Rect rRectCrop = new Rect();
+        private double ColorDiffMax = 0;
 
         // Private variables - results
         class ResultTypeInfo
@@ -57,6 +58,7 @@ namespace ImageAnalyzerApp
             InitData_DirectoryPath();
             InitData_DirectoryFileNames();
             InitData_RectCrop();
+            InitData_ColorDiffMax();
             InitData_ResultTypeInfo();
             InitData_AnalyzeResultInfo();
 
@@ -64,6 +66,7 @@ namespace ImageAnalyzerApp
             RefreshUI_DirectoryPath();
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
+            RefreshUI_ColorDiffMax();
             RefreshUI_ResultTypeInfo();
             RefreshUI_AnalyzeResultInfo();
         }
@@ -88,6 +91,7 @@ namespace ImageAnalyzerApp
             InitData_DirectoryPath();
             InitData_DirectoryFileNames();
             InitData_RectCrop();
+            InitData_ColorDiffMax();
             InitData_ResultTypeInfo();
             InitData_AnalyzeResultInfo();
 
@@ -95,6 +99,7 @@ namespace ImageAnalyzerApp
             RefreshUI_DirectoryPath();
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
+            RefreshUI_ColorDiffMax();
             RefreshUI_ResultTypeInfo();
             RefreshUI_AnalyzeResultInfo();
         }
@@ -242,9 +247,20 @@ namespace ImageAnalyzerApp
             _check_textbox_keypress_allow_number_only_(e);
         }
 
+        private void textBoxColorDiffMax_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Delete && textBoxColorDiffMax.Text.IndexOf('.') != -1)
+            {
+                e.Handled = true;
+                return;
+            }
+
+            e.Handled = !(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == (char)Keys.Delete);
+        }
+
         private void _check_textbox_keypress_allow_number_only_(KeyPressEventArgs e)
         {
-            e.Handled = !(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back);
+            e.Handled = !(char.IsDigit(e.KeyChar) || e.KeyChar == (char)Keys.Back || e.KeyChar == (char)Keys.Delete);
         }
 
         private void textBoxRectXMin_TextChanged(object sender, EventArgs e)
@@ -330,6 +346,27 @@ namespace ImageAnalyzerApp
             Util.Log(string.Format("YMax changed {0}=>{1}", prev, rRectCrop.YMax));
         }
 
+
+        private void textBoxColorDiffMax_TextChanged(object sender, EventArgs e)
+        {
+            double value = 0;
+            var target = textBoxColorDiffMax;
+            if (string.IsNullOrEmpty(target.Text))
+            {
+                target.Text = 0.ToString();
+                return;
+            }
+
+            if (double.TryParse(target.Text, out value) == false)
+                return;
+
+            // Refresh Data
+            var prev = ColorDiffMax;
+            ColorDiffMax = value;
+
+            Util.Log(string.Format("ColorDiffMax changed {0}=>{1}", prev, ColorDiffMax));
+        }
+
         private void onFormImageView_Copy(Rect rRect)
         {
             // Refresh Data
@@ -393,6 +430,11 @@ namespace ImageAnalyzerApp
             listAnalyzeResultInfo.Clear();
         }
 
+        private void InitData_ColorDiffMax()
+        {
+            ColorDiffMax = 0;
+        }
+
         private void RefreshUI_DirectoryPath()
         {
             if (string.IsNullOrEmpty(szDirectoryPath) == false)
@@ -423,6 +465,11 @@ namespace ImageAnalyzerApp
             textBoxRectXMax.Text = rRectCrop.XMax.ToString();
             textBoxRectYMin.Text = rRectCrop.YMin.ToString();
             textBoxRectYMax.Text = rRectCrop.YMax.ToString();
+        }
+
+        private void RefreshUI_ColorDiffMax()
+        {
+            textBoxColorDiffMax.Text = ColorDiffMax.ToString();
         }
 
         private void RefreshUI_ResultTypeInfo()
@@ -583,7 +630,7 @@ namespace ImageAnalyzerApp
             ResultTypeInfo pResultTypeInfo = null;
             for (int i = 0; i < listResultTypeInfo.Count; ++i)
             {
-                if (Util.CompareBitmapsLazy(listResultTypeInfo[i].bitmap, bitmapClone))
+                if (Util.CompareBitmaps(listResultTypeInfo[i].bitmap, bitmapClone, ColorDiffMax))
                 {
                     pResultTypeInfo = listResultTypeInfo[i];
                     break;
