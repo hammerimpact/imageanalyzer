@@ -39,11 +39,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxRectLeft = new System.Windows.Forms.TextBox();
-            this.textBoxRectTop = new System.Windows.Forms.TextBox();
+            this.textBoxRectXMin = new System.Windows.Forms.TextBox();
+            this.textBoxRectYMin = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxRectRight = new System.Windows.Forms.TextBox();
-            this.textBoxRectBottom = new System.Windows.Forms.TextBox();
+            this.textBoxRectXMax = new System.Windows.Forms.TextBox();
+            this.textBoxRectYMax = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.listViewFiles = new System.Windows.Forms.ListView();
             this.listViewTypes = new System.Windows.Forms.ListView();
@@ -135,66 +135,74 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(911, 80);
+            this.label5.Location = new System.Drawing.Point(902, 80);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(25, 12);
+            this.label5.Size = new System.Drawing.Size(34, 12);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Left";
+            this.label5.Text = "XMin";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(909, 117);
+            this.label6.Location = new System.Drawing.Point(900, 117);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(27, 12);
+            this.label6.Size = new System.Drawing.Size(34, 12);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Top";
+            this.label6.Text = "YMin";
             // 
-            // textBoxRectLeft
+            // textBoxRectXMin
             // 
-            this.textBoxRectLeft.Location = new System.Drawing.Point(940, 77);
-            this.textBoxRectLeft.Name = "textBoxRectLeft";
-            this.textBoxRectLeft.Size = new System.Drawing.Size(112, 21);
-            this.textBoxRectLeft.TabIndex = 13;
+            this.textBoxRectXMin.Location = new System.Drawing.Point(940, 77);
+            this.textBoxRectXMin.Name = "textBoxRectXMin";
+            this.textBoxRectXMin.Size = new System.Drawing.Size(112, 21);
+            this.textBoxRectXMin.TabIndex = 13;
+            this.textBoxRectXMin.TextChanged += new System.EventHandler(this.textBoxRectXMin_TextChanged);
+            this.textBoxRectXMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxRectXMin_KeyPress);
             // 
-            // textBoxRectTop
+            // textBoxRectYMin
             // 
-            this.textBoxRectTop.Location = new System.Drawing.Point(940, 114);
-            this.textBoxRectTop.Name = "textBoxRectTop";
-            this.textBoxRectTop.Size = new System.Drawing.Size(112, 21);
-            this.textBoxRectTop.TabIndex = 14;
+            this.textBoxRectYMin.Location = new System.Drawing.Point(940, 114);
+            this.textBoxRectYMin.Name = "textBoxRectYMin";
+            this.textBoxRectYMin.Size = new System.Drawing.Size(112, 21);
+            this.textBoxRectYMin.TabIndex = 14;
+            this.textBoxRectYMin.TextChanged += new System.EventHandler(this.textBoxRectYMin_TextChanged);
+            this.textBoxRectYMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxRectYMin_KeyPress);
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(903, 157);
+            this.label7.Location = new System.Drawing.Point(896, 157);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(33, 12);
+            this.label7.Size = new System.Drawing.Size(38, 12);
             this.label7.TabIndex = 15;
-            this.label7.Text = "Right";
+            this.label7.Text = "XMax";
             // 
-            // textBoxRectRight
+            // textBoxRectXMax
             // 
-            this.textBoxRectRight.Location = new System.Drawing.Point(940, 154);
-            this.textBoxRectRight.Name = "textBoxRectRight";
-            this.textBoxRectRight.Size = new System.Drawing.Size(112, 21);
-            this.textBoxRectRight.TabIndex = 16;
+            this.textBoxRectXMax.Location = new System.Drawing.Point(940, 154);
+            this.textBoxRectXMax.Name = "textBoxRectXMax";
+            this.textBoxRectXMax.Size = new System.Drawing.Size(112, 21);
+            this.textBoxRectXMax.TabIndex = 16;
+            this.textBoxRectXMax.TextChanged += new System.EventHandler(this.textBoxRectXMax_TextChanged);
+            this.textBoxRectXMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxRectXMax_KeyPress);
             // 
-            // textBoxRectBottom
+            // textBoxRectYMax
             // 
-            this.textBoxRectBottom.Location = new System.Drawing.Point(940, 190);
-            this.textBoxRectBottom.Name = "textBoxRectBottom";
-            this.textBoxRectBottom.Size = new System.Drawing.Size(112, 21);
-            this.textBoxRectBottom.TabIndex = 17;
+            this.textBoxRectYMax.Location = new System.Drawing.Point(940, 190);
+            this.textBoxRectYMax.Name = "textBoxRectYMax";
+            this.textBoxRectYMax.Size = new System.Drawing.Size(112, 21);
+            this.textBoxRectYMax.TabIndex = 17;
+            this.textBoxRectYMax.TextChanged += new System.EventHandler(this.textBoxRectYMax_TextChanged);
+            this.textBoxRectYMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxRectYMax_KeyPress);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(892, 193);
+            this.label8.Location = new System.Drawing.Point(896, 193);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 12);
+            this.label8.Size = new System.Drawing.Size(38, 12);
             this.label8.TabIndex = 18;
-            this.label8.Text = "Bottom";
+            this.label8.Text = "YMax";
             // 
             // listViewFiles
             // 
@@ -205,6 +213,7 @@
             this.listViewFiles.TabIndex = 21;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
             this.listViewFiles.View = System.Windows.Forms.View.List;
+            this.listViewFiles.Click += new System.EventHandler(this.listViewFiles_Click);
             // 
             // listViewTypes
             // 
@@ -268,11 +277,11 @@
             this.Controls.Add(this.listViewTypes);
             this.Controls.Add(this.listViewFiles);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.textBoxRectBottom);
-            this.Controls.Add(this.textBoxRectRight);
+            this.Controls.Add(this.textBoxRectYMax);
+            this.Controls.Add(this.textBoxRectXMax);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBoxRectTop);
-            this.Controls.Add(this.textBoxRectLeft);
+            this.Controls.Add(this.textBoxRectYMin);
+            this.Controls.Add(this.textBoxRectXMin);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -303,11 +312,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxRectLeft;
-        private System.Windows.Forms.TextBox textBoxRectTop;
+        private System.Windows.Forms.TextBox textBoxRectXMin;
+        private System.Windows.Forms.TextBox textBoxRectYMin;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBoxRectRight;
-        private System.Windows.Forms.TextBox textBoxRectBottom;
+        private System.Windows.Forms.TextBox textBoxRectXMax;
+        private System.Windows.Forms.TextBox textBoxRectYMax;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ListView listViewFiles;
         private System.Windows.Forms.ListView listViewTypes;
