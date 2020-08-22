@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -123,17 +124,21 @@ namespace ImageAnalyzerApp
                 {
                     var sw = new StringBuilder();
 
-                    for (int i = 0; i < listTargetFileInfos.Count; ++i)
+                    for (int i = 0; i < listAnalyzeResultInfo.Count; ++i)
                     {
-                        sw.Append(listTargetFileInfos[i].Name);
+                        sw.Append(listAnalyzeResultInfo[i].index);
                         sw.Append("\t");
-                        sw.Append(listTargetFileInfos[i].Path);
+                        sw.Append(listAnalyzeResultInfo[i].Name);
+                        sw.Append("\t");
+                        sw.Append(listAnalyzeResultInfo[i].ResultType.typeName);
                         sw.Append("\n");
                     }
 
                     var sz = Encoding.UTF8.GetBytes(sw.ToString());
                     stream.Write(sz, 0, sz.Length);
                 }
+
+                MessageBox.Show("Save Complete.", "Information", MessageBoxButtons.OK);
             }
         }
 
@@ -558,10 +563,7 @@ namespace ImageAnalyzerApp
             {
                 var reason = ExecCropAnalize(i, listTargetFileInfos[i].Name, listTargetFileInfos[i].Path);
                 if (reason == EnumFailedReason.None)
-                {
                     ++nSuccess;
-                    Util.Log(string.Format("ExecCropAnalize Success[{0}/{1}]", i + 1, nAll));
-                }
                 else
                 {
                     bFailed = true;

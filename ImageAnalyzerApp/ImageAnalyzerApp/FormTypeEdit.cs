@@ -45,8 +45,6 @@ namespace ImageAnalyzerApp
             typeName = textBoxTypeName.Text;
 
             funcOnEditTypeName?.Invoke(index, typeName);
-
-            MessageBox.Show("Edit Complete", "Information", MessageBoxButtons.OK);
         }
     }
 }
