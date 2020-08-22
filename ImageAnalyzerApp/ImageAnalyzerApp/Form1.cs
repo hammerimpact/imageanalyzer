@@ -14,8 +14,15 @@ namespace ImageAnalyzerApp
 {
     public partial class Form1 : Form
     {
+        struct TargetFileInfo
+        {
+            public string Name;
+            public string Path;
+        }
+
         // Private variables
-        string szDirectoryPath = string.Empty;
+        private string szDirectoryPath = string.Empty;
+        private List<TargetFileInfo> listTargetFileInfos = new List<TargetFileInfo>();
 
         public Form1()
         {
@@ -26,9 +33,11 @@ namespace ImageAnalyzerApp
         {
             // Init Data
             InitData_DirectoryPath();
+            InitData_DirectoryFileNames();
 
             // Refresh UI
             RefreshUI_DirectoryPath();
+            RefreshUI_DirectoryFileNames();
         }
 
         //private void button_hello_Click(object sender, EventArgs e)
@@ -55,9 +64,11 @@ namespace ImageAnalyzerApp
         {
             // Init Data
             InitData_DirectoryPath();
+            InitData_DirectoryFileNames();
 
             // Refresh Data
             RefreshUI_DirectoryPath();
+            RefreshUI_DirectoryFileNames();
         }
 
 
@@ -79,11 +90,11 @@ namespace ImageAnalyzerApp
                 {
                     var sw = new StringBuilder();
 
-                    for (int i = 0; i < 10; ++i)
+                    for (int i = 0; i < listTargetFileInfos.Count; ++i)
                     {
-                        sw.Append("Test");
+                        sw.Append(listTargetFileInfos[i].Name);
                         sw.Append("\t");
-                        sw.Append(string.Format("{0}", i));
+                        sw.Append(listTargetFileInfos[i].Path);
                         sw.Append("\n");
                     }
 
@@ -98,19 +109,37 @@ namespace ImageAnalyzerApp
             folderBrowserDialog.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
             var result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                // Refresh Data
-                szDirectoryPath = folderBrowserDialog.SelectedPath;
+            if (result != DialogResult.OK)
+                return;
 
-                // Refresh UI
-                RefreshUI_DirectoryPath();
+            if (Directory.Exists(folderBrowserDialog.SelectedPath) == false)
+                return;
+
+            // Refresh Data
+            szDirectoryPath = folderBrowserDialog.SelectedPath;
+
+            listTargetFileInfos.Clear();
+
+            var paths = Directory.GetFiles(szDirectoryPath, "*.jpg");
+            if (null != paths)
+            {
+                for (int i = 0; i < paths.Length; ++i)
+                    listTargetFileInfos.Add(new TargetFileInfo() { Name = Path.GetFileName(paths[i]), Path = paths[i]});
             }
+
+            // Refresh UI
+            RefreshUI_DirectoryPath();
+            RefreshUI_DirectoryFileNames();
         }
 
         private void InitData_DirectoryPath()
         {
             szDirectoryPath = string.Empty;
+        }
+
+        private void InitData_DirectoryFileNames()
+        {
+            listTargetFileInfos.Clear();
         }
 
         private void RefreshUI_DirectoryPath()
@@ -119,6 +148,19 @@ namespace ImageAnalyzerApp
                 textBoxFilePath.Text = szDirectoryPath;
             else
                 textBoxFilePath.Text = "NONE";
+        }
+
+        private void RefreshUI_DirectoryFileNames()
+        {
+            listViewFiles.BeginUpdate();
+            listViewFiles.Items.Clear();
+
+            for (int i = 0; i < listTargetFileInfos.Count; ++i)
+            {
+                var item = new ListViewItem(listTargetFileInfos[i].Name);
+                listViewFiles.Items.Add(item);
+            }
+            listViewFiles.EndUpdate();
         }
 
 

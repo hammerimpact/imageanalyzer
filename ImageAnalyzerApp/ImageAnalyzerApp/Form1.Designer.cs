@@ -45,14 +45,13 @@
             this.textBoxRectRight = new System.Windows.Forms.TextBox();
             this.textBoxRectBottom = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.buttonRectRefresh = new System.Windows.Forms.Button();
-            this.pictureBoxImage = new System.Windows.Forms.PictureBox();
             this.listViewFiles = new System.Windows.Forms.ListView();
             this.listViewTypes = new System.Windows.Forms.ListView();
             this.listViewResults = new System.Windows.Forms.ListView();
             this.buttonSave = new System.Windows.Forms.Button();
             this.saveResultFileDialog = new System.Windows.Forms.SaveFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
+            this.buttonTypesEdit = new System.Windows.Forms.Button();
+            this.buttonResultsEdit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_Start
@@ -96,7 +95,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(443, 57);
+            this.label3.Location = new System.Drawing.Point(501, 57);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 12);
             this.label3.TabIndex = 7;
@@ -197,23 +196,6 @@
             this.label8.TabIndex = 18;
             this.label8.Text = "Bottom";
             // 
-            // buttonRectRefresh
-            // 
-            this.buttonRectRefresh.Location = new System.Drawing.Point(967, 217);
-            this.buttonRectRefresh.Name = "buttonRectRefresh";
-            this.buttonRectRefresh.Size = new System.Drawing.Size(85, 34);
-            this.buttonRectRefresh.TabIndex = 19;
-            this.buttonRectRefresh.Text = "Refresh";
-            this.buttonRectRefresh.UseVisualStyleBackColor = true;
-            // 
-            // pictureBoxImage
-            // 
-            this.pictureBoxImage.Location = new System.Drawing.Point(674, 57);
-            this.pictureBoxImage.Name = "pictureBoxImage";
-            this.pictureBoxImage.Size = new System.Drawing.Size(212, 241);
-            this.pictureBoxImage.TabIndex = 20;
-            this.pictureBoxImage.TabStop = false;
-            // 
             // listViewFiles
             // 
             this.listViewFiles.HideSelection = false;
@@ -222,22 +204,23 @@
             this.listViewFiles.Size = new System.Drawing.Size(166, 390);
             this.listViewFiles.TabIndex = 21;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
+            this.listViewFiles.View = System.Windows.Forms.View.List;
             // 
             // listViewTypes
             // 
             this.listViewTypes.HideSelection = false;
             this.listViewTypes.Location = new System.Drawing.Point(232, 80);
             this.listViewTypes.Name = "listViewTypes";
-            this.listViewTypes.Size = new System.Drawing.Size(166, 390);
+            this.listViewTypes.Size = new System.Drawing.Size(229, 341);
             this.listViewTypes.TabIndex = 22;
             this.listViewTypes.UseCompatibleStateImageBehavior = false;
             // 
             // listViewResults
             // 
             this.listViewResults.HideSelection = false;
-            this.listViewResults.Location = new System.Drawing.Point(445, 80);
+            this.listViewResults.Location = new System.Drawing.Point(503, 80);
             this.listViewResults.Name = "listViewResults";
-            this.listViewResults.Size = new System.Drawing.Size(166, 390);
+            this.listViewResults.Size = new System.Drawing.Size(244, 341);
             this.listViewResults.TabIndex = 23;
             this.listViewResults.UseCompatibleStateImageBehavior = false;
             // 
@@ -255,17 +238,35 @@
             // 
             this.saveResultFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveResultFileDialog_FileOk);
             // 
+            // buttonTypesEdit
+            // 
+            this.buttonTypesEdit.Location = new System.Drawing.Point(232, 436);
+            this.buttonTypesEdit.Name = "buttonTypesEdit";
+            this.buttonTypesEdit.Size = new System.Drawing.Size(85, 34);
+            this.buttonTypesEdit.TabIndex = 25;
+            this.buttonTypesEdit.Text = "Edit";
+            this.buttonTypesEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonResultsEdit
+            // 
+            this.buttonResultsEdit.Location = new System.Drawing.Point(503, 436);
+            this.buttonResultsEdit.Name = "buttonResultsEdit";
+            this.buttonResultsEdit.Size = new System.Drawing.Size(85, 34);
+            this.buttonResultsEdit.TabIndex = 26;
+            this.buttonResultsEdit.Text = "Edit";
+            this.buttonResultsEdit.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1064, 489);
+            this.Controls.Add(this.buttonResultsEdit);
+            this.Controls.Add(this.buttonTypesEdit);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.listViewResults);
             this.Controls.Add(this.listViewTypes);
             this.Controls.Add(this.listViewFiles);
-            this.Controls.Add(this.pictureBoxImage);
-            this.Controls.Add(this.buttonRectRefresh);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.textBoxRectBottom);
             this.Controls.Add(this.textBoxRectRight);
@@ -285,7 +286,6 @@
             this.Name = "Form1";
             this.Text = "Image Analyzer";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -309,13 +309,13 @@
         private System.Windows.Forms.TextBox textBoxRectRight;
         private System.Windows.Forms.TextBox textBoxRectBottom;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button buttonRectRefresh;
-        private System.Windows.Forms.PictureBox pictureBoxImage;
         private System.Windows.Forms.ListView listViewFiles;
         private System.Windows.Forms.ListView listViewTypes;
         private System.Windows.Forms.ListView listViewResults;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.SaveFileDialog saveResultFileDialog;
+        private System.Windows.Forms.Button buttonTypesEdit;
+        private System.Windows.Forms.Button buttonResultsEdit;
     }
 }
 
