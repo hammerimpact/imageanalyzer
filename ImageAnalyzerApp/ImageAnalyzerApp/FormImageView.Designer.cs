@@ -34,12 +34,13 @@
             this.buttonShowOriginRect = new System.Windows.Forms.Button();
             this.buttonToggleRect = new System.Windows.Forms.Button();
             this.textBoxCropState = new System.Windows.Forms.TextBox();
+            this.buttonCopy = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBoxImage
             // 
-            this.pictureBoxImage.Location = new System.Drawing.Point(15, 131);
+            this.pictureBoxImage.Location = new System.Drawing.Point(15, 158);
             this.pictureBoxImage.Name = "pictureBoxImage";
             this.pictureBoxImage.Size = new System.Drawing.Size(378, 418);
             this.pictureBoxImage.TabIndex = 0;
@@ -93,11 +94,22 @@
             this.textBoxCropState.Size = new System.Drawing.Size(207, 60);
             this.textBoxCropState.TabIndex = 5;
             // 
+            // buttonCopy
+            // 
+            this.buttonCopy.Location = new System.Drawing.Point(15, 125);
+            this.buttonCopy.Name = "buttonCopy";
+            this.buttonCopy.Size = new System.Drawing.Size(133, 27);
+            this.buttonCopy.TabIndex = 6;
+            this.buttonCopy.Text = "Copy";
+            this.buttonCopy.UseVisualStyleBackColor = true;
+            this.buttonCopy.Click += new System.EventHandler(this.buttonCopy_Click);
+            // 
             // FormImageView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(415, 564);
+            this.ClientSize = new System.Drawing.Size(415, 593);
+            this.Controls.Add(this.buttonCopy);
             this.Controls.Add(this.textBoxCropState);
             this.Controls.Add(this.buttonToggleRect);
             this.Controls.Add(this.buttonShowOriginRect);
@@ -121,5 +133,6 @@
         private System.Windows.Forms.Button buttonShowOriginRect;
         private System.Windows.Forms.Button buttonToggleRect;
         private System.Windows.Forms.TextBox textBoxCropState;
+        private System.Windows.Forms.Button buttonCopy;
     }
 }

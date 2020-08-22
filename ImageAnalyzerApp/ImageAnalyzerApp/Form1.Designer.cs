@@ -50,8 +50,6 @@
             this.listViewResults = new System.Windows.Forms.ListView();
             this.buttonSave = new System.Windows.Forms.Button();
             this.saveResultFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.buttonTypesEdit = new System.Windows.Forms.Button();
-            this.buttonResultsEdit = new System.Windows.Forms.Button();
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
@@ -96,7 +94,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(501, 57);
+            this.label3.Location = new System.Drawing.Point(470, 57);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(47, 12);
             this.label3.TabIndex = 7;
@@ -213,7 +211,7 @@
             this.listViewFiles.Size = new System.Drawing.Size(166, 390);
             this.listViewFiles.TabIndex = 21;
             this.listViewFiles.UseCompatibleStateImageBehavior = false;
-            this.listViewFiles.View = System.Windows.Forms.View.List;
+            this.listViewFiles.View = System.Windows.Forms.View.Details;
             this.listViewFiles.Click += new System.EventHandler(this.listViewFiles_Click);
             // 
             // listViewTypes
@@ -221,18 +219,21 @@
             this.listViewTypes.HideSelection = false;
             this.listViewTypes.Location = new System.Drawing.Point(232, 80);
             this.listViewTypes.Name = "listViewTypes";
-            this.listViewTypes.Size = new System.Drawing.Size(229, 341);
+            this.listViewTypes.Size = new System.Drawing.Size(229, 390);
             this.listViewTypes.TabIndex = 22;
             this.listViewTypes.UseCompatibleStateImageBehavior = false;
+            this.listViewTypes.View = System.Windows.Forms.View.Details;
+            this.listViewTypes.Click += new System.EventHandler(this.listViewTypes_Click);
             // 
             // listViewResults
             // 
             this.listViewResults.HideSelection = false;
-            this.listViewResults.Location = new System.Drawing.Point(503, 80);
+            this.listViewResults.Location = new System.Drawing.Point(472, 80);
             this.listViewResults.Name = "listViewResults";
-            this.listViewResults.Size = new System.Drawing.Size(244, 341);
+            this.listViewResults.Size = new System.Drawing.Size(275, 390);
             this.listViewResults.TabIndex = 23;
             this.listViewResults.UseCompatibleStateImageBehavior = false;
+            this.listViewResults.View = System.Windows.Forms.View.Details;
             // 
             // buttonSave
             // 
@@ -247,24 +248,6 @@
             // saveResultFileDialog
             // 
             this.saveResultFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveResultFileDialog_FileOk);
-            // 
-            // buttonTypesEdit
-            // 
-            this.buttonTypesEdit.Location = new System.Drawing.Point(232, 436);
-            this.buttonTypesEdit.Name = "buttonTypesEdit";
-            this.buttonTypesEdit.Size = new System.Drawing.Size(85, 34);
-            this.buttonTypesEdit.TabIndex = 25;
-            this.buttonTypesEdit.Text = "Edit";
-            this.buttonTypesEdit.UseVisualStyleBackColor = true;
-            // 
-            // buttonResultsEdit
-            // 
-            this.buttonResultsEdit.Location = new System.Drawing.Point(503, 436);
-            this.buttonResultsEdit.Name = "buttonResultsEdit";
-            this.buttonResultsEdit.Size = new System.Drawing.Size(85, 34);
-            this.buttonResultsEdit.TabIndex = 26;
-            this.buttonResultsEdit.Text = "Edit";
-            this.buttonResultsEdit.UseVisualStyleBackColor = true;
             // 
             // textBoxLog
             // 
@@ -281,8 +264,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 565);
             this.Controls.Add(this.textBoxLog);
-            this.Controls.Add(this.buttonResultsEdit);
-            this.Controls.Add(this.buttonTypesEdit);
             this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.listViewResults);
             this.Controls.Add(this.listViewTypes);
@@ -334,8 +315,6 @@
         private System.Windows.Forms.ListView listViewResults;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.SaveFileDialog saveResultFileDialog;
-        private System.Windows.Forms.Button buttonTypesEdit;
-        private System.Windows.Forms.Button buttonResultsEdit;
         private System.Windows.Forms.TextBox textBoxLog;
     }
 }

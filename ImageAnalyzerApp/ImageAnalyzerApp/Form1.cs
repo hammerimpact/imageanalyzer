@@ -27,6 +27,23 @@ namespace ImageAnalyzerApp
         private List<TargetFileInfo> listTargetFileInfos = new List<TargetFileInfo>();
         private Rect rRectCrop = new Rect();
 
+        // Private variables - results
+        class ResultTypeInfo
+        {
+            public int index = 0;
+            public string typeName = string.Empty;
+            public Bitmap bitmap = null;
+        }
+        private List<ResultTypeInfo> listResultTypeInfo = new List<ResultTypeInfo>();
+
+        struct AnalyzeResultInfo
+        {
+            public int index;
+            public string Name;
+            public ResultTypeInfo ResultType;
+        }
+        private List<AnalyzeResultInfo> listAnalyzeResultInfo = new List<AnalyzeResultInfo>();
+
         public Form1()
         {
             _instance = this;
@@ -40,11 +57,15 @@ namespace ImageAnalyzerApp
             InitData_DirectoryPath();
             InitData_DirectoryFileNames();
             InitData_RectCrop();
+            InitData_ResultTypeInfo();
+            InitData_AnalyzeResultInfo();
 
             // Refresh UI
             RefreshUI_DirectoryPath();
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
+            RefreshUI_ResultTypeInfo();
+            RefreshUI_AnalyzeResultInfo();
         }
 
         private void button_Start_Click(object sender, EventArgs e)
@@ -53,7 +74,7 @@ namespace ImageAnalyzerApp
             switch (result)
             {
                 case DialogResult.Yes:
-                    ExecCropAndAnalize();
+                    ExecCropAndAnalizeAll();
                     break;
 
                 case DialogResult.No:
@@ -67,11 +88,15 @@ namespace ImageAnalyzerApp
             InitData_DirectoryPath();
             InitData_DirectoryFileNames();
             InitData_RectCrop();
+            InitData_ResultTypeInfo();
+            InitData_AnalyzeResultInfo();
 
             // Refresh Data
             RefreshUI_DirectoryPath();
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
+            RefreshUI_ResultTypeInfo();
+            RefreshUI_AnalyzeResultInfo();
         }
 
 
@@ -128,6 +153,8 @@ namespace ImageAnalyzerApp
             {
                 for (int i = 0; i < paths.Length; ++i)
                     listTargetFileInfos.Add(new TargetFileInfo() { Name = Path.GetFileName(paths[i]), Path = paths[i]});
+
+                listTargetFileInfos.Sort((l, r)=> l.Name.CompareTo(r.Name));
             }
 
             // Refresh UI
@@ -141,13 +168,14 @@ namespace ImageAnalyzerApp
                 return;
 
             var selectedItem = listViewFiles.SelectedItems[0];
+            var key = selectedItem.Text;
 
             var _name = string.Empty;
             var _path = string.Empty;
 
             for (int i = 0; i < listTargetFileInfos.Count; ++i)
             {
-                if (listTargetFileInfos[i].Name == selectedItem.Text)
+                if (listTargetFileInfos[i].Name == key)
                 {
                     _name = listTargetFileInfos[i].Name;
                     _path = listTargetFileInfos[i].Path;
@@ -159,7 +187,37 @@ namespace ImageAnalyzerApp
                 return;
 
             var dlg = new FormImageView();
-            dlg.SetData(_name, _path, rRectCrop);
+            dlg.SetData(_name, _path, rRectCrop, onFormImageView_Copy);
+            dlg.Show();
+        }
+
+
+        private void listViewTypes_Click(object sender, EventArgs e)
+        {
+            if (listViewTypes.SelectedItems.Count == 0)
+                return;
+
+            var selectedItem = listViewTypes.SelectedItems[0];
+
+            int key = 0;
+            if (int.TryParse(selectedItem.Text, out key) == false)
+                return;
+
+            ResultTypeInfo pResultTypeInfo = null;
+            for (int i = 0; i < listResultTypeInfo.Count; ++i)
+            {
+                if (listResultTypeInfo[i].index == key)
+                {
+                    pResultTypeInfo = listResultTypeInfo[i];
+                    break;
+                }
+            }
+
+            if (pResultTypeInfo == null)
+                return;
+
+            var dlg = new FormTypeEdit();
+            dlg.SetData(pResultTypeInfo.index, pResultTypeInfo.typeName, pResultTypeInfo.bitmap, onFormTypeEdit_Edit);
             dlg.Show();
         }
 
@@ -272,6 +330,34 @@ namespace ImageAnalyzerApp
             Util.Log(string.Format("YMax changed {0}=>{1}", prev, rRectCrop.YMax));
         }
 
+        private void onFormImageView_Copy(Rect rRect)
+        {
+            // Refresh Data
+            rRectCrop.Copy(rRect);
+
+            // Refresh UI
+            RefreshUI_RectCrop();
+        }
+
+        private void onFormTypeEdit_Edit(int index, string typeName)
+        {
+            // Refresh Data
+            var isChanged = false;
+            for (int i = 0; i < listResultTypeInfo.Count; ++i)
+            {
+                if (listResultTypeInfo[i].index == index)
+                {
+                    isChanged = true;
+                    listResultTypeInfo[i].typeName = typeName;
+                    break;
+                }
+            }
+
+            // Refresh UI
+            if (isChanged)
+                RefreshUI_ResultTypeInfo();
+        }
+
 
         private void InitData_DirectoryPath()
         {
@@ -288,6 +374,25 @@ namespace ImageAnalyzerApp
             rRectCrop = new Rect();
         }
 
+        private void InitData_ResultTypeInfo()
+        {
+            for (int i = 0; i < listResultTypeInfo.Count; ++i)
+            {
+                if (listResultTypeInfo[i].bitmap != null)
+                {
+                    listResultTypeInfo[i].bitmap.Dispose();
+                    listResultTypeInfo[i].bitmap = null;
+                }
+            }
+
+            listResultTypeInfo.Clear();
+        }
+
+        private void InitData_AnalyzeResultInfo()
+        {
+            listAnalyzeResultInfo.Clear();
+        }
+
         private void RefreshUI_DirectoryPath()
         {
             if (string.IsNullOrEmpty(szDirectoryPath) == false)
@@ -298,14 +403,17 @@ namespace ImageAnalyzerApp
 
         private void RefreshUI_DirectoryFileNames()
         {
+            listViewFiles.Clear();
+
             listViewFiles.BeginUpdate();
-            listViewFiles.Items.Clear();
 
             for (int i = 0; i < listTargetFileInfos.Count; ++i)
             {
-                var item = new ListViewItem(listTargetFileInfos[i].Name);
-                listViewFiles.Items.Add(item);
+                var lvi = new ListViewItem(listTargetFileInfos[i].Name);
+                listViewFiles.Items.Add(lvi);
             }
+            listViewFiles.Columns.Add("FileName", 140);
+
             listViewFiles.EndUpdate();
         }
 
@@ -315,6 +423,50 @@ namespace ImageAnalyzerApp
             textBoxRectXMax.Text = rRectCrop.XMax.ToString();
             textBoxRectYMin.Text = rRectCrop.YMin.ToString();
             textBoxRectYMax.Text = rRectCrop.YMax.ToString();
+        }
+
+        private void RefreshUI_ResultTypeInfo()
+        {
+            listViewTypes.Clear();
+
+            listViewTypes.BeginUpdate();
+
+            for (int i = 0; i < listResultTypeInfo.Count; ++i)
+            {
+                var data = listResultTypeInfo[i];
+                var lvi = new ListViewItem(data.index.ToString());
+                lvi.SubItems.Add(data.typeName.ToString());
+                listViewTypes.Items.Add(lvi);
+            }
+
+            listViewTypes.Columns.Add("index", 80);
+            listViewTypes.Columns.Add("TypeName", 140);
+
+            listViewTypes.EndUpdate();
+        }
+
+        private void RefreshUI_AnalyzeResultInfo()
+        {
+            listViewResults.Clear();
+
+            listViewResults.BeginUpdate();
+
+            for (int i = 0; i < listAnalyzeResultInfo.Count; ++i)
+            {
+                var data = listAnalyzeResultInfo[i];
+                var lvi = new ListViewItem(data.Name.ToString());
+                if (null != data.ResultType)
+                    lvi.SubItems.Add(data.ResultType.index.ToString());
+                else
+                    lvi.SubItems.Add("Type NULL");
+
+                listViewResults.Items.Add(lvi);
+            }
+
+            listViewResults.Columns.Add("Name", 140);
+            listViewResults.Columns.Add("TypeIndex", 100);
+
+            listViewResults.EndUpdate();
         }
 
         private List<string> listLog = new List<string>();
@@ -338,11 +490,126 @@ namespace ImageAnalyzerApp
             textBoxLog.Text = sbLog.ToString();
         }
 
-        private void ExecCropAndAnalize()
+        // ExecCropAndAnalize
+        private void ExecCropAndAnalizeAll()
         {
-            Util.Log("===============ExecCropAndAnalize Start===============");
+            // Refresh Data
+            InitData_ResultTypeInfo();
+            InitData_AnalyzeResultInfo();
+
+            // Refresh UI
+            RefreshUI_ResultTypeInfo();
+            RefreshUI_AnalyzeResultInfo();
+
+            // Refresh Data 2
+            Util.Log("===============ExecCropAndAnalizeAll Start===============");
+
+            bool bFailed = false;
+            int nSuccess = 0;
+            int nAll = listTargetFileInfos.Count;
+            for (int i = 0; i < nAll; ++i)
+            {
+                var reason = ExecCropAnalize(i, listTargetFileInfos[i].Name, listTargetFileInfos[i].Path);
+                if (reason == EnumFailedReason.None)
+                {
+                    ++nSuccess;
+                    Util.Log(string.Format("ExecCropAnalize Success[{0}/{1}]", i + 1, nAll));
+                }
+                else
+                {
+                    bFailed = true;
+                    Util.Log(string.Format("ExecCropAnalize Failed[{0}] : {1}", listTargetFileInfos[i].Name, reason));
+                    break;
+                }
+            }
+
+            if (bFailed == false)
+            {
+                Util.Log(string.Format("===============ExecCropAndAnalizeAll Complete[{0}/{1}]===============", nSuccess, nAll));
+            }
+            else
+            {
+                // Refresh Data
+                InitData_ResultTypeInfo();
+                InitData_AnalyzeResultInfo();
+            }
+
+            // Refresh UI
+            RefreshUI_ResultTypeInfo();
+            RefreshUI_AnalyzeResultInfo();
+
+            //SaveResultType();
         }
 
+        //private void SaveResultType()
+        //{
+        //    for (int i = 0; i < listResultTypeInfo.Count; ++i)
+        //    {
+        //        if (listResultTypeInfo[i].bitmap != null)
+        //            listResultTypeInfo[i].bitmap.Save(szDirectoryPath + string.Format("\\image{0}.png", i), System.Drawing.Imaging.ImageFormat.Png);
+        //    }
+        //}
+
+        private enum EnumFailedReason
+        {
+            None,
+            FileNotExist,
+            BitmapLoadFailed,
+            RectCropInvalid,
+            BitmapCloneFailed,
+        }
+
+        private EnumFailedReason ExecCropAnalize(int index, string Name, string path)
+        {
+            if (File.Exists(path) == false)
+                return EnumFailedReason.FileNotExist;
+
+            var rectCrop = new Rect(rRectCrop.XMin, rRectCrop.YMin, rRectCrop.XMax, rRectCrop.YMax);
+            if (rectCrop.XMin == rectCrop.XMax || rRectCrop.YMin == rRectCrop.YMax)
+                return EnumFailedReason.RectCropInvalid;
+
+            var bitmapOrigin = Util.LoadBitmap(path);
+            if (null == bitmapOrigin)
+                return EnumFailedReason.BitmapLoadFailed;
+
+            var cropRectangle = new Rectangle(rectCrop.XMin, rectCrop.YMin, rectCrop.Width, rectCrop.Height);
+            var bitmapClone = bitmapOrigin.Clone(cropRectangle, bitmapOrigin.PixelFormat);
+            if (null == bitmapClone)
+            {
+                bitmapOrigin.Dispose();
+                return EnumFailedReason.BitmapCloneFailed;
+            }
+
+            ResultTypeInfo pResultTypeInfo = null;
+            for (int i = 0; i < listResultTypeInfo.Count; ++i)
+            {
+                if (Util.CompareBitmapsLazy(listResultTypeInfo[i].bitmap, bitmapClone))
+                {
+                    pResultTypeInfo = listResultTypeInfo[i];
+                    break;
+                }
+            }
+
+            if (null == pResultTypeInfo)
+            {
+                pResultTypeInfo = new ResultTypeInfo();
+                pResultTypeInfo.index = listResultTypeInfo.Count;
+                pResultTypeInfo.typeName = string.Format("type{0}", pResultTypeInfo.index);
+                pResultTypeInfo.bitmap = bitmapClone;
+
+                listResultTypeInfo.Add(pResultTypeInfo);
+            }
+
+            var kAnalyzeResult = new AnalyzeResultInfo();
+            kAnalyzeResult.index = index;
+            kAnalyzeResult.Name = Name;
+            kAnalyzeResult.ResultType = pResultTypeInfo;
+
+            listAnalyzeResultInfo.Add(kAnalyzeResult);
+
+            bitmapOrigin.Dispose();
+            return EnumFailedReason.None;
+        }
 
         #region Useless Callback
         private void folderBrowserDialog_HelpRequest(object sender, EventArgs e)
@@ -355,5 +622,6 @@ namespace ImageAnalyzerApp
 
         }
         #endregion
+
     }
 }

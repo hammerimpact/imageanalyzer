@@ -12,20 +12,23 @@ namespace ImageAnalyzerApp
 {
     public partial class FormImageView : Form
     {
+        // Private variables
         private string fileName = string.Empty;
         private string path = string.Empty;
+        private Action<Rect> funcOnCopy = null;
         private Rect rRect = new Rect();
         private Rect rRectOrigin = new Rect();
 
         private bool isEditCropRectMode = false;
 
 
-        public void SetData(string fileName, string path, Rect rRect)
+        public void SetData(string fileName, string path, Rect rRect, Action<Rect> funcOnCopy)
         {
             this.fileName = fileName;
             this.path = path;
             this.rRect = rRect;
             this.rRectOrigin = rRect;
+            this.funcOnCopy = funcOnCopy;
         }
 
         public FormImageView()
@@ -60,6 +63,14 @@ namespace ImageAnalyzerApp
 
             // Refresh UI
             RefreshUI_CropState();
+        }
+
+
+        private void buttonCopy_Click(object sender, EventArgs e)
+        {
+            funcOnCopy?.Invoke(rRect);
+
+            MessageBox.Show("Copy Complete", "Information", MessageBoxButtons.OK);
         }
 
         private Point kTempPointDown = new Point();
