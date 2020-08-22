@@ -13,6 +13,9 @@ namespace ImageAnalyzerApp
 {
     public partial class Form1 : Form
     {
+        private static Form1 _instance = null;
+        public static Form1 Instance => _instance;
+
         struct TargetFileInfo
         {
             public string Name;
@@ -26,6 +29,8 @@ namespace ImageAnalyzerApp
 
         public Form1()
         {
+            _instance = this;
+
             InitializeComponent();
         }
 
@@ -42,24 +47,18 @@ namespace ImageAnalyzerApp
             RefreshUI_RectCrop();
         }
 
-        //private void button_hello_Click(object sender, EventArgs e)
-        //{
-        //    //var result = MessageBox.Show(string.Format("isTest : {0}", nTest), "뻐큐", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
-        //    //switch (result)
-        //    //{
-        //    //    case DialogResult.Yes:
-        //    //        ++nTest;
-        //    //        break;
-
-        //    //    case DialogResult.No:
-        //    //        --nTest;
-        //    //        break;
-        //    //}
-        //}
-
         private void button_Start_Click(object sender, EventArgs e)
         {
-            
+            var result = MessageBox.Show("Ready to Start?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    ExecCropAndAnalize();
+                    break;
+
+                case DialogResult.No:
+                    break;
+            }
         }
 
         private void button_Clear_Click(object sender, EventArgs e)
@@ -204,7 +203,10 @@ namespace ImageAnalyzerApp
                 return;
 
             // Refresh Data
+            var prev = rRectCrop.XMin;
             rRectCrop.XMin = value;
+
+            Util.Log(string.Format("XMin changed {0}=>{1}", prev, rRectCrop.XMin));
         }
 
 
@@ -222,7 +224,10 @@ namespace ImageAnalyzerApp
                 return;
 
             // Refresh Data
+            var prev = rRectCrop.YMin;
             rRectCrop.YMin = value;
+
+            Util.Log(string.Format("YMin changed {0}=>{1}", prev, rRectCrop.YMin));
         }
 
 
@@ -240,7 +245,10 @@ namespace ImageAnalyzerApp
                 return;
 
             // Refresh Data
+            var prev = rRectCrop.XMax;
             rRectCrop.XMax = value;
+
+            Util.Log(string.Format("XMax changed {0}=>{1}", prev, rRectCrop.XMax));
         }
 
 
@@ -258,7 +266,10 @@ namespace ImageAnalyzerApp
                 return;
 
             // Refresh Data
+            var prev = rRectCrop.YMax;
             rRectCrop.YMax = value;
+
+            Util.Log(string.Format("YMax changed {0}=>{1}", prev, rRectCrop.YMax));
         }
 
 
@@ -304,6 +315,32 @@ namespace ImageAnalyzerApp
             textBoxRectXMax.Text = rRectCrop.XMax.ToString();
             textBoxRectYMin.Text = rRectCrop.YMin.ToString();
             textBoxRectYMax.Text = rRectCrop.YMax.ToString();
+        }
+
+        private List<string> listLog = new List<string>();
+        private StringBuilder sbLog = new StringBuilder();
+        public void SetLog(string log)
+        {
+            if (string.IsNullOrEmpty(log))
+                return;
+
+            // Refresh Data
+            if (listLog.Count >= 3)
+                listLog.RemoveAt(0);
+
+            listLog.Add(log);
+
+            sbLog.Clear();
+            for (int i = 0; i < listLog.Count; ++i)
+                sbLog.AppendLine(listLog[i]);
+
+            // Refresh UI
+            textBoxLog.Text = sbLog.ToString();
+        }
+
+        private void ExecCropAndAnalize()
+        {
+            Util.Log("===============ExecCropAndAnalize Start===============");
         }
 
 

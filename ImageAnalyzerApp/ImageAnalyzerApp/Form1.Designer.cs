@@ -52,11 +52,12 @@
             this.saveResultFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.buttonTypesEdit = new System.Windows.Forms.Button();
             this.buttonResultsEdit = new System.Windows.Forms.Button();
+            this.textBoxLog = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button_Start
             // 
-            this.button_Start.Location = new System.Drawing.Point(906, 341);
+            this.button_Start.Location = new System.Drawing.Point(769, 341);
             this.button_Start.Name = "button_Start";
             this.button_Start.Size = new System.Drawing.Size(148, 37);
             this.button_Start.TabIndex = 2;
@@ -66,7 +67,7 @@
             // 
             // button_Clear
             // 
-            this.button_Clear.Location = new System.Drawing.Point(906, 384);
+            this.button_Clear.Location = new System.Drawing.Point(769, 384);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(148, 37);
             this.button_Clear.TabIndex = 3;
@@ -106,12 +107,12 @@
             this.textBoxFilePath.Location = new System.Drawing.Point(29, 12);
             this.textBoxFilePath.Name = "textBoxFilePath";
             this.textBoxFilePath.ReadOnly = true;
-            this.textBoxFilePath.Size = new System.Drawing.Size(827, 21);
+            this.textBoxFilePath.Size = new System.Drawing.Size(718, 21);
             this.textBoxFilePath.TabIndex = 8;
             // 
             // button_Load
             // 
-            this.button_Load.Location = new System.Drawing.Point(862, 12);
+            this.button_Load.Location = new System.Drawing.Point(753, 12);
             this.button_Load.Name = "button_Load";
             this.button_Load.Size = new System.Drawing.Size(84, 21);
             this.button_Load.TabIndex = 9;
@@ -126,7 +127,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(904, 57);
+            this.label4.Location = new System.Drawing.Point(767, 57);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(30, 12);
             this.label4.TabIndex = 10;
@@ -135,7 +136,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(902, 80);
+            this.label5.Location = new System.Drawing.Point(765, 80);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 12);
             this.label5.TabIndex = 11;
@@ -144,7 +145,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(900, 117);
+            this.label6.Location = new System.Drawing.Point(763, 117);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(34, 12);
             this.label6.TabIndex = 12;
@@ -152,7 +153,7 @@
             // 
             // textBoxRectXMin
             // 
-            this.textBoxRectXMin.Location = new System.Drawing.Point(940, 77);
+            this.textBoxRectXMin.Location = new System.Drawing.Point(803, 77);
             this.textBoxRectXMin.Name = "textBoxRectXMin";
             this.textBoxRectXMin.Size = new System.Drawing.Size(112, 21);
             this.textBoxRectXMin.TabIndex = 13;
@@ -161,7 +162,7 @@
             // 
             // textBoxRectYMin
             // 
-            this.textBoxRectYMin.Location = new System.Drawing.Point(940, 114);
+            this.textBoxRectYMin.Location = new System.Drawing.Point(803, 114);
             this.textBoxRectYMin.Name = "textBoxRectYMin";
             this.textBoxRectYMin.Size = new System.Drawing.Size(112, 21);
             this.textBoxRectYMin.TabIndex = 14;
@@ -171,7 +172,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(896, 157);
+            this.label7.Location = new System.Drawing.Point(759, 157);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(38, 12);
             this.label7.TabIndex = 15;
@@ -179,7 +180,7 @@
             // 
             // textBoxRectXMax
             // 
-            this.textBoxRectXMax.Location = new System.Drawing.Point(940, 154);
+            this.textBoxRectXMax.Location = new System.Drawing.Point(803, 154);
             this.textBoxRectXMax.Name = "textBoxRectXMax";
             this.textBoxRectXMax.Size = new System.Drawing.Size(112, 21);
             this.textBoxRectXMax.TabIndex = 16;
@@ -188,7 +189,7 @@
             // 
             // textBoxRectYMax
             // 
-            this.textBoxRectYMax.Location = new System.Drawing.Point(940, 190);
+            this.textBoxRectYMax.Location = new System.Drawing.Point(803, 190);
             this.textBoxRectYMax.Name = "textBoxRectYMax";
             this.textBoxRectYMax.Size = new System.Drawing.Size(112, 21);
             this.textBoxRectYMax.TabIndex = 17;
@@ -198,7 +199,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(896, 193);
+            this.label8.Location = new System.Drawing.Point(759, 193);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(38, 12);
             this.label8.TabIndex = 18;
@@ -235,7 +236,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(906, 427);
+            this.buttonSave.Location = new System.Drawing.Point(769, 427);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(148, 37);
             this.buttonSave.TabIndex = 24;
@@ -265,11 +266,21 @@
             this.buttonResultsEdit.Text = "Edit";
             this.buttonResultsEdit.UseVisualStyleBackColor = true;
             // 
+            // textBoxLog
+            // 
+            this.textBoxLog.Location = new System.Drawing.Point(29, 492);
+            this.textBoxLog.Multiline = true;
+            this.textBoxLog.Name = "textBoxLog";
+            this.textBoxLog.ReadOnly = true;
+            this.textBoxLog.Size = new System.Drawing.Size(718, 61);
+            this.textBoxLog.TabIndex = 27;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1064, 489);
+            this.ClientSize = new System.Drawing.Size(934, 565);
+            this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.buttonResultsEdit);
             this.Controls.Add(this.buttonTypesEdit);
             this.Controls.Add(this.buttonSave);
@@ -325,6 +336,7 @@
         private System.Windows.Forms.SaveFileDialog saveResultFileDialog;
         private System.Windows.Forms.Button buttonTypesEdit;
         private System.Windows.Forms.Button buttonResultsEdit;
+        private System.Windows.Forms.TextBox textBoxLog;
     }
 }
 

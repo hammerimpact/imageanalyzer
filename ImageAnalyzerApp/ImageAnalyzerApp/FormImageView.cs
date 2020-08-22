@@ -15,6 +15,9 @@ namespace ImageAnalyzerApp
         private string fileName = string.Empty;
         private string path = string.Empty;
         private Rect rRect = new Rect();
+        private Rect rRectOrigin = new Rect();
+
+        private bool isEditCropRectMode = false;
 
 
         public void SetData(string fileName, string path, Rect rRect)
@@ -22,6 +25,7 @@ namespace ImageAnalyzerApp
             this.fileName = fileName;
             this.path = path;
             this.rRect = rRect;
+            this.rRectOrigin = rRect;
         }
 
         public FormImageView()
@@ -31,13 +35,63 @@ namespace ImageAnalyzerApp
 
         private void FormImageView_Load(object sender, EventArgs e)
         {
+            // Refresh UI
             labelName.Text = fileName;
             textBoxPath.Text = path;
-
             pictureBoxImage.Image = Util.LoadBitmap(path);
+            RefreshUI_CropState();
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+
+        private void buttonShowOriginRect_Click(object sender, EventArgs e)
+        {
+            // Refresh Data
+            rRect = rRectOrigin;
+
+            // Refresh UI
+            RefreshUI_DrawCropRect();
+            RefreshUI_CropState();
+        }
+
+        private void buttonToggleRect_Click(object sender, EventArgs e)
+        {
+            // Refresh Data
+            isEditCropRectMode = !isEditCropRectMode;
+
+            // Refresh UI
+            RefreshUI_CropState();
+        }
+
+        private Point kTempPointDown = new Point();
+        private Point kTempPointUp = new Point();
+
+        private void pictureBoxImage_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (!isEditCropRectMode)
+                return;
+
+            kTempPointDown = pictureBoxImage.PointToClient(Cursor.Position);
+
+            // Refresh UI
+            pictureBoxImage.Invalidate(); // for cleanup lines
+        }
+
+        private void pictureBoxImage_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (!isEditCropRectMode)
+                return;
+
+            kTempPointUp = pictureBoxImage.PointToClient(Cursor.Position);
+
+            // Refresh Data
+            rRect = new Rect(kTempPointDown.X, kTempPointDown.Y, kTempPointUp.X, kTempPointUp.Y);
+
+            // Refresh UI
+            RefreshUI_DrawCropRect();
+            RefreshUI_CropState();
+        }
+
+        private void RefreshUI_DrawCropRect()
         {
             using (Graphics g = pictureBoxImage.CreateGraphics())
             {
@@ -49,8 +103,20 @@ namespace ImageAnalyzerApp
             }
         }
 
+        private StringBuilder sbCropState = new StringBuilder();
+        private void RefreshUI_CropState()
+        {
+            sbCropState.Clear();
+
+            sbCropState.AppendLine(string.Format("EditCropMode : {0}", isEditCropRectMode));
+            sbCropState.AppendLine(string.Format("XMin : {0} / YMin : {1}", rRect.XMin, rRect.YMin));
+            sbCropState.AppendLine(string.Format("XMax : {0} / YMax : {1}", rRect.XMax, rRect.YMax));
+
+            textBoxCropState.Text = sbCropState.ToString();
+        }
+
         #region Useless Callback
-        
         #endregion
+
     }
 }

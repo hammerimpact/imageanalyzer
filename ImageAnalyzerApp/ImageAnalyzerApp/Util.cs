@@ -19,6 +19,29 @@ namespace ImageAnalyzerApp
         public Point LeftBottom => new Point(XMin, YMax);
         public Point RightTop => new Point(XMax, YMin);
         public Point RightBottom => new Point(XMax, YMax);
+
+        public Rect(int xmin, int ymin, int xmax, int ymax)
+        {
+            this.XMin = xmin;
+            this.YMin = ymin;
+            this.XMax = xmax;
+            this.YMax = ymax;
+
+            Invalidate();
+        }
+
+        private void Invalidate()
+        {
+            int _xmin = Math.Min(XMin, XMax);
+            int _xmax = Math.Max(XMin, XMax);
+            int _ymin = Math.Min(YMin, YMax);
+            int _ymax = Math.Max(YMin, YMax);
+
+            XMin = _xmin;
+            XMax = _xmax;
+            YMin = _ymin;
+            YMax = _ymax;
+        }
     }
 
     public static class Util
@@ -36,6 +59,11 @@ namespace ImageAnalyzerApp
                     return new Bitmap(memoryStream);
                 }
             }
+        }
+
+        public static void Log(string log)
+        {
+            Form1.Instance.SetLog(log);
         }
     }
 }
