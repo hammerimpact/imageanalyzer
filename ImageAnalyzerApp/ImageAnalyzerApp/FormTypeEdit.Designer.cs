@@ -34,6 +34,8 @@
             this.textBoxTypeName = new System.Windows.Forms.TextBox();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.pictureBoxImage = new System.Windows.Forms.PictureBox();
+            this.buttonIndexPrev = new System.Windows.Forms.Button();
+            this.buttonIndexNext = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,11 +90,33 @@
             this.pictureBoxImage.TabIndex = 5;
             this.pictureBoxImage.TabStop = false;
             // 
+            // buttonIndexPrev
+            // 
+            this.buttonIndexPrev.Location = new System.Drawing.Point(294, 10);
+            this.buttonIndexPrev.Name = "buttonIndexPrev";
+            this.buttonIndexPrev.Size = new System.Drawing.Size(37, 23);
+            this.buttonIndexPrev.TabIndex = 6;
+            this.buttonIndexPrev.Text = "◀";
+            this.buttonIndexPrev.UseVisualStyleBackColor = true;
+            this.buttonIndexPrev.Click += new System.EventHandler(this.buttonIndexPrev_Click);
+            // 
+            // buttonIndexNext
+            // 
+            this.buttonIndexNext.Location = new System.Drawing.Point(356, 10);
+            this.buttonIndexNext.Name = "buttonIndexNext";
+            this.buttonIndexNext.Size = new System.Drawing.Size(37, 23);
+            this.buttonIndexNext.TabIndex = 7;
+            this.buttonIndexNext.Text = "▶";
+            this.buttonIndexNext.UseVisualStyleBackColor = true;
+            this.buttonIndexNext.Click += new System.EventHandler(this.buttonIndexNext_Click);
+            // 
             // FormTypeEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(405, 500);
+            this.Controls.Add(this.buttonIndexNext);
+            this.Controls.Add(this.buttonIndexPrev);
             this.Controls.Add(this.pictureBoxImage);
             this.Controls.Add(this.buttonEdit);
             this.Controls.Add(this.textBoxTypeName);
@@ -116,5 +140,7 @@
         private System.Windows.Forms.TextBox textBoxTypeName;
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.PictureBox pictureBoxImage;
+        private System.Windows.Forms.Button buttonIndexPrev;
+        private System.Windows.Forms.Button buttonIndexNext;
     }
 }

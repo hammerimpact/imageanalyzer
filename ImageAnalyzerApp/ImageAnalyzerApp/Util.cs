@@ -11,6 +11,20 @@ using System.Threading.Tasks;
 
 namespace ImageAnalyzerApp
 {
+    public class ResultTypeInfo
+    {
+        public int index = 0;
+        public string typeName = string.Empty;
+        public Bitmap bitmap = null;
+    }
+
+    public struct AnalyzeResultInfo
+    {
+        public int index;
+        public string Name;
+        public ResultTypeInfo ResultType;
+    }
+
     public struct Rect
     {
         public int XMin;

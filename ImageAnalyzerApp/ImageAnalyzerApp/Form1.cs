@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace ImageAnalyzerApp
 {
     public partial class Form1 : Form
@@ -30,20 +31,7 @@ namespace ImageAnalyzerApp
         private double ColorDiffMax = 0;
 
         // Private variables - results
-        class ResultTypeInfo
-        {
-            public int index = 0;
-            public string typeName = string.Empty;
-            public Bitmap bitmap = null;
-        }
         private List<ResultTypeInfo> listResultTypeInfo = new List<ResultTypeInfo>();
-
-        struct AnalyzeResultInfo
-        {
-            public int index;
-            public string Name;
-            public ResultTypeInfo ResultType;
-        }
         private List<AnalyzeResultInfo> listAnalyzeResultInfo = new List<AnalyzeResultInfo>();
 
         public Form1()
@@ -227,8 +215,16 @@ namespace ImageAnalyzerApp
                 return;
 
             var dlg = new FormTypeEdit();
-            dlg.SetData(pResultTypeInfo.index, pResultTypeInfo.typeName, pResultTypeInfo.bitmap, onFormTypeEdit_Edit);
+            dlg.SetData(pResultTypeInfo.index, onFormTypeEdit_Edit, _get_result_type_info_);
             dlg.Show();
+        }
+
+        private ResultTypeInfo _get_result_type_info_(int index)
+        {
+            if (index < 0 || index >= listResultTypeInfo.Count)
+                return null;
+
+            return listResultTypeInfo[index];
         }
 
 
