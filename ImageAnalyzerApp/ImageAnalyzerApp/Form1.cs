@@ -216,6 +216,7 @@ namespace ImageAnalyzerApp
 
             var dlg = new FormTypeEdit();
             dlg.SetData(pResultTypeInfo.index, onFormTypeEdit_Edit, _get_result_type_info_);
+            dlg.SetDataTryEdit(_try_edit_type_index_, _get_analyze_result_info_);
             dlg.Show();
         }
 
@@ -227,6 +228,42 @@ namespace ImageAnalyzerApp
             return listResultTypeInfo[index];
         }
 
+        private bool _try_edit_type_index_(int AnalyzeIndex, int ChangeTypeIndex)
+        {
+            if (AnalyzeIndex < 0 || AnalyzeIndex >= listAnalyzeResultInfo.Count)
+                return false;
+
+            if (ChangeTypeIndex < 0 || ChangeTypeIndex >= listResultTypeInfo.Count)
+                return false;
+
+            var AnalyzeInfo = listAnalyzeResultInfo[AnalyzeIndex];
+            var ResultTypeInfo = listResultTypeInfo[ChangeTypeIndex];
+
+            if (AnalyzeInfo.ResultType.index == ResultTypeInfo.index)
+                return false;
+
+            // Refresh Data
+            AnalyzeInfo.ResultType = ResultTypeInfo;
+            listAnalyzeResultInfo[AnalyzeIndex] = AnalyzeInfo;
+
+            // Refresh UI
+            RefreshUI_AnalyzeResultInfo();
+
+            return true;
+        }
+
+        private List<AnalyzeResultInfo> _get_analyze_result_info_(int TypeIndex)
+        {
+            var retVal = new List<AnalyzeResultInfo>();
+
+            for (int i = 0; i < listAnalyzeResultInfo.Count; ++i)
+            {
+                if (listAnalyzeResultInfo[i].ResultType.index == TypeIndex)
+                    retVal.Add(listAnalyzeResultInfo[i]);
+            }
+
+            return retVal;
+        }
 
         private void textBoxRectXMin_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -648,6 +685,7 @@ namespace ImageAnalyzerApp
             var kAnalyzeResult = new AnalyzeResultInfo();
             kAnalyzeResult.index = index;
             kAnalyzeResult.Name = Name;
+            kAnalyzeResult.Path = path;
             kAnalyzeResult.ResultType = pResultTypeInfo;
 
             listAnalyzeResultInfo.Add(kAnalyzeResult);

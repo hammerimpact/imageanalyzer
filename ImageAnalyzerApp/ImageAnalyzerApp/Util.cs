@@ -22,6 +22,7 @@ namespace ImageAnalyzerApp
     {
         public int index;
         public string Name;
+        public string Path;
         public ResultTypeInfo ResultType;
     }
 

@@ -36,6 +36,8 @@
             this.pictureBoxImage = new System.Windows.Forms.PictureBox();
             this.buttonIndexPrev = new System.Windows.Forms.Button();
             this.buttonIndexNext = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.listTypeDataList = new System.Windows.Forms.ListView();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,11 +112,33 @@
             this.buttonIndexNext.UseVisualStyleBackColor = true;
             this.buttonIndexNext.Click += new System.EventHandler(this.buttonIndexNext_Click);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(417, 51);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(74, 12);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "typeDataList";
+            // 
+            // listTypeDataList
+            // 
+            this.listTypeDataList.HideSelection = false;
+            this.listTypeDataList.Location = new System.Drawing.Point(412, 77);
+            this.listTypeDataList.Name = "listTypeDataList";
+            this.listTypeDataList.Size = new System.Drawing.Size(218, 410);
+            this.listTypeDataList.TabIndex = 9;
+            this.listTypeDataList.UseCompatibleStateImageBehavior = false;
+            this.listTypeDataList.View = System.Windows.Forms.View.Details;
+            this.listTypeDataList.Click += new System.EventHandler(this.listTypeDataList_Click);
+            // 
             // FormTypeEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 500);
+            this.ClientSize = new System.Drawing.Size(642, 500);
+            this.Controls.Add(this.listTypeDataList);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonIndexNext);
             this.Controls.Add(this.buttonIndexPrev);
             this.Controls.Add(this.pictureBoxImage);
@@ -142,5 +166,7 @@
         private System.Windows.Forms.PictureBox pictureBoxImage;
         private System.Windows.Forms.Button buttonIndexPrev;
         private System.Windows.Forms.Button buttonIndexNext;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListView listTypeDataList;
     }
 }
