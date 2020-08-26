@@ -86,9 +86,11 @@ namespace ImageAnalyzerApp
             index = idx;
             typeName = info.typeName;
             bitmap = info.bitmap;
+            RefreshData_AnalyzeResultList();
 
             // Refresh UI
             RefreshUI_Type();
+            RefreshUI_AnalyzeResultList();
         }
 
         private void buttonIndexNext_Click(object sender, EventArgs e)
@@ -106,9 +108,11 @@ namespace ImageAnalyzerApp
             index = idx;
             typeName = info.typeName;
             bitmap = info.bitmap;
+            RefreshData_AnalyzeResultList();
 
             // Refresh UI
             RefreshUI_Type();
+            RefreshUI_AnalyzeResultList();
         }
 
 
