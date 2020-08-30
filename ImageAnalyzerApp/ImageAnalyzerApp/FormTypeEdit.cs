@@ -64,6 +64,27 @@ namespace ImageAnalyzerApp
             RefreshUI_AnalyzeResultList();
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // HotKey Setting
+
+            Keys keyCheck = keyData & ~(Keys.Shift | Keys.Control);
+            
+            switch (keyCheck)
+            {
+                case Keys.Enter:
+                    if ((keyData & Keys.Control)!= 0)
+                    {
+                        buttonEdit_Click(null, null);
+                        buttonIndexNext_Click(null, null);
+                    }
+                    return true;
+
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+        }
+
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             // RefreshData

@@ -38,6 +38,7 @@
             this.buttonIndexNext = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.listTypeDataList = new System.Windows.Forms.ListView();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -132,11 +133,21 @@
             this.listTypeDataList.View = System.Windows.Forms.View.Details;
             this.listTypeDataList.Click += new System.EventHandler(this.listTypeDataList_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(417, 15);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(128, 12);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Ctrl+Enter: Edit + Next";
+            // 
             // FormTypeEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 500);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.listTypeDataList);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.buttonIndexNext);
@@ -168,5 +179,6 @@
         private System.Windows.Forms.Button buttonIndexNext;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListView listTypeDataList;
+        private System.Windows.Forms.Label label4;
     }
 }
