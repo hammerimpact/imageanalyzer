@@ -53,6 +53,7 @@
             this.textBoxLog = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxColorDiffMax = new System.Windows.Forms.TextBox();
+            this.backWorkerExec = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // button_Start
@@ -278,6 +279,12 @@
             this.textBoxColorDiffMax.TextChanged += new System.EventHandler(this.textBoxColorDiffMax_TextChanged);
             this.textBoxColorDiffMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxColorDiffMax_KeyPress);
             // 
+            // backWorkerExec
+            // 
+            this.backWorkerExec.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backWorkerExec_DoWork);
+            this.backWorkerExec.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backWorkerExec_ProgressChanged);
+            this.backWorkerExec.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backWorkerExec_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -340,6 +347,7 @@
         private System.Windows.Forms.TextBox textBoxLog;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBoxColorDiffMax;
+        private System.ComponentModel.BackgroundWorker backWorkerExec;
     }
 }
 
