@@ -616,7 +616,7 @@ namespace ImageAnalyzerApp
         private class WorkResult
         {
             public EnumFailedReason eFailedReason;
-            public int info;
+            public string Path;
         }
 
         private EnumFailedReason ExecCropAnalize(int index, string Name, string path)
@@ -678,7 +678,7 @@ namespace ImageAnalyzerApp
 
             var kWorkResult = new WorkResult();
             kWorkResult.eFailedReason = EnumFailedReason.None;
-            kWorkResult.info = 0;
+            kWorkResult.Path = string.Empty;
 
             int nAll = listTargetFileInfos.Count;
             for (int i = 0; i < nAll; ++i)
@@ -708,7 +708,7 @@ namespace ImageAnalyzerApp
                 else
                 {
                     kWorkResult.eFailedReason = reason;
-                    kWorkResult.info = i;
+                    kWorkResult.Path = listTargetFileInfos[i].Path;
                     break;
                 }
             }
@@ -730,6 +730,8 @@ namespace ImageAnalyzerApp
                 // Refresh Data
                 InitData_ResultTypeInfo();
                 InitData_AnalyzeResultInfo();
+
+                MessageBox.Show("ExecCropAndAnalizeAll Canceled.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (!(e.Error == null))
             {
@@ -738,10 +740,11 @@ namespace ImageAnalyzerApp
                 // Refresh Data
                 InitData_ResultTypeInfo();
                 InitData_AnalyzeResultInfo();
+
+                MessageBox.Show("ExecCropAndAnalizeAll Error.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-
                 if (e.Result != null && e.Result is WorkResult)
                 {
                     var kWorkResult = e.Result as WorkResult;
@@ -750,9 +753,11 @@ namespace ImageAnalyzerApp
                         if (kWorkResult.eFailedReason == EnumFailedReason.None)
                             Util.Log("===============ExecCropAndAnalizeAll Complete===============");
                         else
-                            Util.Log(string.Format("===============ExecCropAndAnalizeAll Failed {0} {1}===============", kWorkResult.eFailedReason, kWorkResult.info));
+                            Util.Log(string.Format("===============ExecCropAndAnalizeAll Failed {0} {1}===============", kWorkResult.eFailedReason, kWorkResult.Path));
                     }
                 }
+
+                MessageBox.Show("ExecCropAndAnalizeAll Complete.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             // Refresh UI
