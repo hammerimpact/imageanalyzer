@@ -29,6 +29,7 @@ namespace ImageAnalyzerApp
         private List<TargetFileInfo> listTargetFileInfos = new List<TargetFileInfo>();
         private Rect rRectCrop = new Rect();
         private double ColorDiffMax = 0;
+        private int SSIMPercent = 0;
 
         // Private variables - results
         private List<ResultTypeInfo> listResultTypeInfo = new List<ResultTypeInfo>();
@@ -51,6 +52,7 @@ namespace ImageAnalyzerApp
             InitData_DirectoryFileNames();
             InitData_RectCrop();
             InitData_ColorDiffMax();
+            InitData_SSIMPercent();
             InitData_ResultTypeInfo();
             InitData_AnalyzeResultInfo();
 
@@ -59,6 +61,7 @@ namespace ImageAnalyzerApp
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
             RefreshUI_ColorDiffMax();
+            RefreshUI_SSIMPercent();
             RefreshUI_ResultTypeInfo();
             RefreshUI_AnalyzeResultInfo();
         }
@@ -69,7 +72,22 @@ namespace ImageAnalyzerApp
             switch (result)
             {
                 case DialogResult.Yes:
-                    ExecCropAndAnalizeAll();
+                    ExecCropAndAnalizeAll(ExecType.NORMAL);
+                    break;
+
+                case DialogResult.No:
+                    break;
+            }
+        }
+
+
+        private void buttonStartSSIM_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Ready to StartSSIM?", "Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2);
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    ExecCropAndAnalizeAll(ExecType.SSIM);
                     break;
 
                 case DialogResult.No:
@@ -84,6 +102,7 @@ namespace ImageAnalyzerApp
             InitData_DirectoryFileNames();
             InitData_RectCrop();
             InitData_ColorDiffMax();
+            InitData_SSIMPercent();
             InitData_ResultTypeInfo();
             InitData_AnalyzeResultInfo();
 
@@ -92,6 +111,7 @@ namespace ImageAnalyzerApp
             RefreshUI_DirectoryFileNames();
             RefreshUI_RectCrop();
             RefreshUI_ColorDiffMax();
+            RefreshUI_SSIMPercent();
             RefreshUI_ResultTypeInfo();
             RefreshUI_AnalyzeResultInfo();
         }
@@ -288,6 +308,11 @@ namespace ImageAnalyzerApp
             _check_textbox_keypress_allow_number_only_(e);
         }
 
+        private void textBoxSSIMSet_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            _check_textbox_keypress_allow_number_only_(e);
+        }
+
         private void textBoxColorDiffMax_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Delete && textBoxColorDiffMax.Text.IndexOf('.') != -1)
@@ -408,6 +433,28 @@ namespace ImageAnalyzerApp
             Util.Log(string.Format("ColorDiffMax changed {0}=>{1}", prev, ColorDiffMax));
         }
 
+
+        private void textBoxSSIMSet_TextChanged(object sender, EventArgs e)
+        {
+            int value = 0;
+            var target = textBoxSSIMSet;
+            if (string.IsNullOrEmpty(target.Text))
+            {
+                target.Text = 0.ToString();
+                return;
+            }
+
+            if (int.TryParse(target.Text, out value) == false)
+                return;
+
+            // Refresh Data
+            var prev = SSIMPercent;
+            SSIMPercent = value;
+
+            Util.Log(string.Format("SSIMPercent changed {0}=>{1}", prev, SSIMPercent));
+        }
+
+
         private void onFormImageView_Copy(Rect rRect)
         {
             // Refresh Data
@@ -477,6 +524,11 @@ namespace ImageAnalyzerApp
             ColorDiffMax = 0;
         }
 
+        private void InitData_SSIMPercent()
+        {
+            SSIMPercent = 0;
+        }
+
         private void RefreshUI_DirectoryPath()
         {
             if (string.IsNullOrEmpty(szDirectoryPath) == false)
@@ -512,6 +564,11 @@ namespace ImageAnalyzerApp
         private void RefreshUI_ColorDiffMax()
         {
             textBoxColorDiffMax.Text = ColorDiffMax.ToString();
+        }
+
+        private void RefreshUI_SSIMPercent()
+        {
+            textBoxSSIMSet.Text = SSIMPercent.ToString();
         }
 
         private void RefreshUI_ResultTypeInfo()
@@ -579,8 +636,13 @@ namespace ImageAnalyzerApp
             textBoxLog.Text = sbLog.ToString();
         }
 
+        private enum ExecType
+        {
+            NORMAL,
+            SSIM,
+        }
         // ExecCropAndAnalize
-        private void ExecCropAndAnalizeAll()
+        private void ExecCropAndAnalizeAll(ExecType type)
         {
             // Refresh Data
             InitData_ResultTypeInfo();
@@ -592,7 +654,7 @@ namespace ImageAnalyzerApp
 
             Util.Log("===============ExecCropAndAnalizeAll Start===============");
 
-            backWorkerExec.RunWorkerAsync();
+            backWorkerExec.RunWorkerAsync(type);
         }
 
         //private void SaveResultType()
@@ -619,7 +681,7 @@ namespace ImageAnalyzerApp
             public string Path;
         }
 
-        private EnumFailedReason ExecCropAnalize(int index, string Name, string path)
+        private EnumFailedReason ExecCropAnalize(ExecType eExecType, int index, string Name, string path)
         {
             if (File.Exists(path) == false)
                 return EnumFailedReason.FileNotExist;
@@ -641,9 +703,25 @@ namespace ImageAnalyzerApp
             }
 
             ResultTypeInfo pResultTypeInfo = null;
+            bool isEqual = false;
             for (int i = 0; i < listResultTypeInfo.Count; ++i)
             {
-                if (Util.CompareBitmaps(listResultTypeInfo[i].bitmap, bitmapClone, ColorDiffMax))
+                isEqual = false;
+                switch (eExecType)
+                {
+                    case ExecType.NORMAL:
+                        isEqual = Util.CompareBitmaps(listResultTypeInfo[i].bitmap, bitmapClone, ColorDiffMax);
+                        break;
+
+                    case ExecType.SSIM:
+                        isEqual = Util.CompareBitmapsSSIM(listResultTypeInfo[i].bitmap, bitmapClone, SSIMPercent * 0.01f);
+                        break;
+
+                    default:
+                        break;
+                }
+
+                if (isEqual)
                 {
                     pResultTypeInfo = listResultTypeInfo[i];
                     break;
@@ -676,6 +754,8 @@ namespace ImageAnalyzerApp
         {
             var bw = sender as BackgroundWorker;
 
+            var eExecType = (ExecType)e.Argument;
+
             var kWorkResult = new WorkResult();
             kWorkResult.eFailedReason = EnumFailedReason.None;
             kWorkResult.Path = string.Empty;
@@ -691,7 +771,7 @@ namespace ImageAnalyzerApp
                 }
 
                 // Exec
-                var reason = ExecCropAnalize(i, listTargetFileInfos[i].Name, listTargetFileInfos[i].Path);
+                var reason = ExecCropAnalize(eExecType, i, listTargetFileInfos[i].Name, listTargetFileInfos[i].Path);
                 if (reason == EnumFailedReason.None)
                 {
                     if (bw != null)

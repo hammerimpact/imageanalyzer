@@ -54,11 +54,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxColorDiffMax = new System.Windows.Forms.TextBox();
             this.backWorkerExec = new System.ComponentModel.BackgroundWorker();
+            this.label10 = new System.Windows.Forms.Label();
+            this.textBoxSSIMSet = new System.Windows.Forms.TextBox();
+            this.buttonStartSSIM = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_Start
             // 
-            this.button_Start.Location = new System.Drawing.Point(769, 341);
+            this.button_Start.Location = new System.Drawing.Point(767, 265);
             this.button_Start.Name = "button_Start";
             this.button_Start.Size = new System.Drawing.Size(148, 37);
             this.button_Start.TabIndex = 2;
@@ -68,7 +71,7 @@
             // 
             // button_Clear
             // 
-            this.button_Clear.Location = new System.Drawing.Point(769, 384);
+            this.button_Clear.Location = new System.Drawing.Point(767, 457);
             this.button_Clear.Name = "button_Clear";
             this.button_Clear.Size = new System.Drawing.Size(148, 37);
             this.button_Clear.TabIndex = 3;
@@ -240,7 +243,7 @@
             // 
             // buttonSave
             // 
-            this.buttonSave.Location = new System.Drawing.Point(769, 427);
+            this.buttonSave.Location = new System.Drawing.Point(767, 500);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(148, 37);
             this.buttonSave.TabIndex = 24;
@@ -264,7 +267,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(769, 241);
+            this.label9.Location = new System.Drawing.Point(767, 223);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(85, 12);
             this.label9.TabIndex = 28;
@@ -272,7 +275,7 @@
             // 
             // textBoxColorDiffMax
             // 
-            this.textBoxColorDiffMax.Location = new System.Drawing.Point(769, 256);
+            this.textBoxColorDiffMax.Location = new System.Drawing.Point(767, 238);
             this.textBoxColorDiffMax.Name = "textBoxColorDiffMax";
             this.textBoxColorDiffMax.Size = new System.Drawing.Size(146, 21);
             this.textBoxColorDiffMax.TabIndex = 29;
@@ -285,11 +288,42 @@
             this.backWorkerExec.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backWorkerExec_ProgressChanged);
             this.backWorkerExec.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backWorkerExec_RunWorkerCompleted);
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(767, 322);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(82, 12);
+            this.label10.TabIndex = 30;
+            this.label10.Text = "SSIM Percent";
+            // 
+            // textBoxSSIMSet
+            // 
+            this.textBoxSSIMSet.Location = new System.Drawing.Point(767, 337);
+            this.textBoxSSIMSet.Name = "textBoxSSIMSet";
+            this.textBoxSSIMSet.Size = new System.Drawing.Size(146, 21);
+            this.textBoxSSIMSet.TabIndex = 31;
+            this.textBoxSSIMSet.TextChanged += new System.EventHandler(this.textBoxSSIMSet_TextChanged);
+            this.textBoxSSIMSet.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxSSIMSet_KeyPress);
+            // 
+            // buttonStartSSIM
+            // 
+            this.buttonStartSSIM.Location = new System.Drawing.Point(767, 364);
+            this.buttonStartSSIM.Name = "buttonStartSSIM";
+            this.buttonStartSSIM.Size = new System.Drawing.Size(148, 37);
+            this.buttonStartSSIM.TabIndex = 32;
+            this.buttonStartSSIM.Text = "StartSSIM";
+            this.buttonStartSSIM.UseVisualStyleBackColor = true;
+            this.buttonStartSSIM.Click += new System.EventHandler(this.buttonStartSSIM_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 565);
+            this.Controls.Add(this.buttonStartSSIM);
+            this.Controls.Add(this.textBoxSSIMSet);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.textBoxColorDiffMax);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBoxLog);
@@ -348,6 +382,9 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBoxColorDiffMax;
         private System.ComponentModel.BackgroundWorker backWorkerExec;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBoxSSIMSet;
+        private System.Windows.Forms.Button buttonStartSSIM;
     }
 }
 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OpenCvSharp;
 
 namespace ImageAnalyzerApp
 {
@@ -33,10 +34,10 @@ namespace ImageAnalyzerApp
         public int YMin;
         public int YMax;
 
-        public Point LeftTop => new Point(XMin, YMin);
-        public Point LeftBottom => new Point(XMin, YMax);
-        public Point RightTop => new Point(XMax, YMin);
-        public Point RightBottom => new Point(XMax, YMax);
+        public System.Drawing.Point LeftTop         => new System.Drawing.Point(XMin, YMin);
+        public System.Drawing.Point LeftBottom      => new System.Drawing.Point(XMin, YMax);
+        public System.Drawing.Point RightTop        => new System.Drawing.Point(XMax, YMin);
+        public System.Drawing.Point RightBottom     => new System.Drawing.Point(XMax, YMax);
         public int Width => XMax - XMin;
         public int Height => YMax - YMin;
 
@@ -134,6 +135,106 @@ namespace ImageAnalyzerApp
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// OpenCV4Window 4.4.0 Required
+        /// </summary>
+        /// <param name="bmp1"></param>
+        /// <param name="bmp2"></param>
+        /// <param name="DiffMax"></param>
+        /// <returns></returns>
+        public static bool CompareBitmapsSSIM(Bitmap bmp1, Bitmap bmp2, Double percent)
+        {
+            if (bmp1 == null || bmp2 == null)
+                return false;
+            if (object.Equals(bmp1, bmp2))
+                return false;
+            if (!bmp1.Size.Equals(bmp2.Size) || !bmp1.PixelFormat.Equals(bmp2.PixelFormat))
+                return false;
+
+            Mat img1 = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmp1); 
+            Mat img2 = OpenCvSharp.Extensions.BitmapConverter.ToMat(bmp2); 
+
+            const double C1 = 6.5025, C2 = 58.5225;
+            /***************************** INITS **********************************/
+            MatType d = MatType.CV_32F;
+
+            Mat I1 = new Mat(), I2 = new Mat();
+            // cannot calculate on one byte large values
+            img1.ConvertTo(I1, d);           
+            img2.ConvertTo(I2, d);
+
+            Mat I2_2 = I2.Mul(I2);        // I2^2
+            Mat I1_2 = I1.Mul(I1);        // I1^2
+            Mat I1_I2 = I1.Mul(I2);        // I1 * I2
+
+            /***********************PRELIMINARY COMPUTING ******************************/
+
+            Mat mu1 = new Mat(), mu2 = new Mat();   //
+            Cv2.GaussianBlur(I1, mu1, new OpenCvSharp.Size(11, 11), 1.5);
+            Cv2.GaussianBlur(I2, mu2, new OpenCvSharp.Size(11, 11), 1.5);
+
+            Mat mu1_2 = mu1.Mul(mu1);
+            Mat mu2_2 = mu2.Mul(mu2);
+            Mat mu1_mu2 = mu1.Mul(mu2);
+
+            Mat sigma1_2 = new Mat(), sigma2_2 = new Mat(), sigma12 = new Mat();
+
+            Cv2.GaussianBlur(I1_2, sigma1_2, new OpenCvSharp.Size(11, 11), 1.5);
+            sigma1_2 -= mu1_2;
+
+            Cv2.GaussianBlur(I2_2, sigma2_2, new OpenCvSharp.Size(11, 11), 1.5);
+            sigma2_2 -= mu2_2;
+
+            Cv2.GaussianBlur(I1_I2, sigma12, new OpenCvSharp.Size(11, 11), 1.5);
+            sigma12 -= mu1_mu2;
+
+            ///////////////////////////////// FORMULA ////////////////////////////////
+            Mat t1, t2, t3;
+
+            t1 = 2 * mu1_mu2 + C1;
+            t2 = 2 * sigma12 + C2;
+            t3 = t1.Mul(t2);              // t3 = ((2*mu1_mu2 + C1).*(2*sigma12 + C2))
+
+            t1 = mu1_2 + mu2_2 + C1;
+            t2 = sigma1_2 + sigma2_2 + C2;
+            t1 = t1.Mul(t2);               // t1 =((mu1_2 + mu2_2 + C1).*(sigma1_2 + sigma2_2 + C2))
+
+            Mat ssim_map = new Mat();
+            Cv2.Divide(t3, t1, ssim_map);      // ssim_map =  t3./t1;
+            Scalar mssim = Cv2.Mean(ssim_map);// mssim = average of ssim map
+
+            var ssimValue = (mssim[0] + mssim[1] + mssim[2]) / 3;
+
+            // Dispose
+            List<IDisposable> listDisposable = new List<IDisposable>();
+            listDisposable.Add(img1);
+            listDisposable.Add(img2);
+            listDisposable.Add(I1);
+            listDisposable.Add(I2);
+            listDisposable.Add(I2_2);
+            listDisposable.Add(I1_2);
+            listDisposable.Add(I1_I2);
+            listDisposable.Add(mu1);
+            listDisposable.Add(mu2);
+            listDisposable.Add(mu1_2);
+            listDisposable.Add(mu2_2);
+            listDisposable.Add(mu1_mu2);
+            listDisposable.Add(sigma1_2);
+            listDisposable.Add(sigma2_2);
+            listDisposable.Add(sigma12);
+            listDisposable.Add(t1);
+            listDisposable.Add(t2);
+            listDisposable.Add(t3);
+            listDisposable.Add(ssim_map);
+            foreach (var iDispose in listDisposable)
+            {
+                if (iDispose != null)
+                    iDispose.Dispose();
+            }
+
+            return ssimValue > percent;
         }
 
         public static void Log(string log)
